@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# Stash Unstaged Changes- before testing etc.
+git stash --include-untracked --keep-index 1>/dev/null
+
+# Grunt process files and runs tests for us.  What a nice guy.
+### GRUNT-GITHOOKS START
+### GRUNT-GITHOOKS END
+
+# Fail if there are any unstaged changes, as this indicates that one of the
+# `grunt process` steps has produced output we need to include.
+# -z -> true if the length of a string is 0.  See `man test` for more ddetails.
+unstaged="`git status --porcelain | cut -c 2 | tr -d " \n"`"
+if [ "$unstaged" != "" ];
+then
+    echo "Grunt left some unstaged changes.  You should add them and try again."
+    echo "Remember: any changes YOU left unstaged are in a git-stash now."
+    exit 1
+fi
+
+# Unstash Unstaged Changes
+git stash pop 1>/dev/null
