@@ -16,10 +16,6 @@
  *
  *   * Clean parts of the build directory in each build script, to handle
  *     deleted files.  Need to investigate- is this necessary?
- *   * Don't create files with the `grunt build_js` task if there are no js files.
- *     Currently an empty app-level js file is created.
- *   * Don't run jshint in the `grunt test` task if there are no js source or
- *     test files.
  *
  * 
  * Setup
@@ -74,6 +70,17 @@
  * See individual modules and tasks (below) for the specific commands to run
  * them.
  */
+
+
+/* Glob
+ * ------------------------------------------------------
+ * [Docs](https://www.npmjs.org/package/glob)
+ *
+ * Glob is a file pattern matcher used by node (and thus grunt).  It is mainly
+ * used here to check if directories are empty before running certain tasks.
+ */
+ 
+var glob = require("glob");
 
 
 /* Grunt Modules and Commands
@@ -613,7 +620,7 @@ module.exports = function(grunt) {
 
 /* Grunt Tasks
  * ========================================================================== */
- 
+
 
 /* Task: Precommit
  * ------------------------------------------------------
@@ -678,11 +685,17 @@ module.exports = function(grunt) {
         'copy:img'
     ]);
 
-    grunt.registerTask('build_js', [
-        'trimtrailingspaces:js'
-      , 'concat:js'
-      , 'uglify:yomama'
-    ]);
+    grunt.registerTask('build_js', function() {
+      if (grunt.config('concat').js.src.some(function (src) {
+        return glob.sync(src).length > 0;
+      })) {
+        grunt.task.run([
+            'trimtrailingspaces:js'
+          , 'concat:js'
+          , 'uglify:yomama'
+        ]);
+      }
+    });
 
     grunt.registerTask('build_scss', [
         'trimtrailingspaces:scss'
@@ -699,9 +712,21 @@ module.exports = function(grunt) {
  */
   grunt.registerTask('test', [
       'jshint:all'
-    , 'karma:jsunit'
+    , 'test_js'
     , 'phpunit'
   ]);
+
+  // A helper to prevent `grunt karma:jsunit` from failing if there are no
+  // unit tests, for example on project initialization.
+  grunt.registerTask('test_js', function() {
+    if (glob.sync('test/jsunit/**/*.js').length) {
+      grunt.task.run([
+          'trimtrailingspaces:js'
+        , 'concat:js'
+        , 'uglify:yomama'
+      ]);
+    }
+  });
 
 
 /* Task: Default
