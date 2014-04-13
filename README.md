@@ -54,7 +54,6 @@ Ready to make your own delicious not-quite-frozen treat?  How about a [midnight 
     ```
 
  3. Setup your source and test folders (in `midight/` now). You can also do this after the initial commit.
-
       - Add any libraries (3rd party dependencies) to `src/lib`.
       - Add existing dynamic resources to `src/dynamic`.
       - Add existing static resources to `src/static`.
@@ -62,7 +61,6 @@ Ready to make your own delicious not-quite-frozen treat?  How about a [midnight 
       - Add existing tests to `test/`.
 
  4. Setup Grunt.  Setup instructions are copied below, see the Grunt documentation in `Gruntfile.js` for more info.
-
      1. Install Node.js and the Node Package Manager (npm): http://nodejs.org/download/
      2. Install Grunt: http://gruntjs.com/getting-started
           * Note that the project is already configured, so look at the "Working with an existing Grunt project" section after installing grunt.
