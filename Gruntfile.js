@@ -14,8 +14,7 @@
  *
  * **TODOs**
  *
- *   * Clean parts of the build directory in each build script, to handle
- *     deleted files.  Need to investigate- is this necessary?
+ * https://github.com/jtfairbank/Milkshake/issues?labels=Grunt&page=1&state=open
  *
  * 
  * Setup

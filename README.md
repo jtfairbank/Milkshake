@@ -14,12 +14,7 @@ Milkshake provides a starting structure and some pre-configured grunt taks.  It 
 
 **TODOs**
 
-  * Use [Bower](http://bower.io/) to install `lib/` files.
-  * Research project bootstrapping tools
-      - Different Levels: project bootstraps like this vs. project aspect bootstraps like Twitter Bootstrap
-      - Different Backend, Frontend Setups: php vs. perl (haha... ha), js + bootstrap + jquery vs. Angular
-  * Contact [Bloc](bloc.io) about creating open source template projects for multiple languages?  Basically take HTML5Bootstrap and extend it for specific common project setups.
-  * Better copy process for Setup step 1.  Use github releases to create a download?
+https://github.com/jtfairbank/Milkshake/issues
 
 Structure
 ------------------------------------------------------------
