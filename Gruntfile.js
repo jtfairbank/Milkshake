@@ -2,9 +2,9 @@
 
 /* Grunt Intro
  * ==========================================================================
- * Grunt.js is a node module that provides a javascript based task runner.  We
- * use it to do things like automatically write SCSS to CSS, lint javascript
- * source files, and concatinate files for the production environment.
+ * Grunt.js is a node module that provides a javascript based task runner.
+ * Use it to do things like automatically write SCSS to CSS, lint javascript
+ * source files, and concatenate files for the production environment.
  *
  * **Contents**
  *
@@ -20,9 +20,6 @@
  * 
  * Setup
  * ------------------------------------------------------
- *
- * NOTE: These are reproduced in the README's setup section, so any changes must
- *       be copied there as well.
  *
  *  1. Install Node.js and the Node Package Manager (npm): http://nodejs.org/download/
  *  2. Install Grunt: http://gruntjs.com/getting-started
@@ -57,7 +54,7 @@
  *
  * Grunt commands can be run with:
  *
- *     `grunt [module]:[subcommand]`
+ *     `grunt [module]:[command]`
  *
  * You can run all of the commands for a module with:
  *
@@ -103,7 +100,8 @@ module.exports = function(grunt) {
  * ### Commands ###
  *
  *   * `grunt clean` - Run all clean commands (below).
- *   * `grunt clean:build` - Empty the `build/` directory.
+ *   * `grunt clean:build` - Empty the `build/` directory, except for hidden
+ *     files.
  */
     , clean: {
         build: ['build/*', '!build/**/.*']
@@ -130,7 +128,9 @@ module.exports = function(grunt) {
     , concat: {
           js: {
               options: {
-                  banner: "'use strict';\n\n/* Our JS Files\n * ============================================================================= */\n\n"
+                  banner: "'use strict';\n\n" +
+                          "/* Our JS Files\n" +
+                          " * ============================================================================= */\n\n"
                 , separator: '\n\n'
                 , footer: "\n"
               }
@@ -164,7 +164,7 @@ module.exports = function(grunt) {
           pages: {
               expand: true
             , cwd: 'src/'
-            , src: './*.*' // files only!
+            , src: './*.*' // HACK: files only!
             , dest: 'build/'            
           }
 
@@ -196,7 +196,6 @@ module.exports = function(grunt) {
             , dest: 'build/static/data/'
           }
       }
- 
 
 
 /* Module: Githooks
@@ -317,7 +316,7 @@ module.exports = function(grunt) {
                 // except 3rd party and minified files
               , '!src/lib/**/*.js'
               , '!build/lib/**/*.js'
-              , '!build/static/app.min.js'
+              , '!build/**/*.min.js'
 
                 // but specifically include these
             ]
@@ -342,7 +341,7 @@ module.exports = function(grunt) {
 
                 // except 3rd party and minified files
               , '!build/lib/**/*.js'
-              , '!build/static/app.min.js'
+              , '!build/**/*.min.js'
 
                 // but specifically include these
             ]
@@ -388,13 +387,11 @@ module.exports = function(grunt) {
                 , 'test/jsunit/**/*.js'
               ]
 
+/*
             // Use the `!exclude/me` syntax in files (above) instead.
-            /*
-            
             , exclude: [
               ]
-            
-            */
+*/
 
             , browsers: ['PhantomJS']
             , frameworks: ["jasmine"]
@@ -439,8 +436,8 @@ module.exports = function(grunt) {
  *
  * Use SASS [@import](sass_import) to include files into an app level file, which will then
  * be converted to SCSS. This behaviour is different than that of the js, which
- * gets concatenated into an app level file in build.  However, imports are
- * baked into SASS and can be used to group related styles.
+ * gets concatenated into an app level file in the build task.  However, imports
+ * are baked into SASS and can be used to group related styles.
  *
  * [sass_import]: http://sass-lang.com/documentation/file.SASS_REFERENCE.html#import
  *
@@ -624,7 +621,7 @@ module.exports = function(grunt) {
 
 /* Task: Precommit
  * ------------------------------------------------------
- * The tasks to be executed before a commit is allowed to go through.  This task
+ * Execute other tasks before a commit is allowed to go through.  This task
  * is setup as a githook by `grunt githooks:precommit`.
  *
  * Run with `grunt precommit`.
@@ -651,6 +648,7 @@ module.exports = function(grunt) {
  */
   grunt.registerTask('build', [
       'clean:build'
+    , 'trimtrailingspaces'
     , 'build_pages'
     , 'build_lib'
     , 'build_dynamic'
@@ -666,8 +664,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('build_dynamic', [
-      'trimtrailingspaces:php'
-    , 'copy:dynamic'
+      'copy:dynamic'
   ]);
 
   grunt.registerTask('build_static', [
@@ -690,16 +687,14 @@ module.exports = function(grunt) {
         return glob.sync(src).length > 0;
       })) {
         grunt.task.run([
-            'trimtrailingspaces:js'
-          , 'concat:js'
+            'concat:js'
           , 'uglify:yomama'
         ]);
       }
     });
 
     grunt.registerTask('build_scss', [
-        'trimtrailingspaces:scss'
-      , 'sass:stylin'
+        'sass:stylin'
       , 'sass:stylin_min'
     ]);
 
