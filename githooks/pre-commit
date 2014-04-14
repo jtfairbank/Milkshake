@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Stash Unstaged Changes- before testing etc.
-git stash --include-untracked --keep-index 1>/dev/null
+git stash --quiet --include-untracked --keep-index
 
 # Grunt process files and runs tests for us.  What a nice guy.
 ### GRUNT-GITHOOKS START
@@ -19,4 +19,4 @@ then
 fi
 
 # Unstash Unstaged Changes
-git stash pop 1>/dev/null
+git stash pop --quiet

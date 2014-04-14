@@ -11,10 +11,7 @@
  *  1. Grunt Intro
  *  2. Grunt Modules and Commands
  *  3. Grunt Tasks
- *
- * **TODOs**
- *
- * https://github.com/jtfairbank/Milkshake/issues?labels=Grunt&page=1&state=open
+ *  4. [TODOs](https://github.com/jtfairbank/Milkshake/issues?labels=Grunt&page=1&state=open)
  *
  * 
  * Setup
@@ -22,12 +19,31 @@
  *
  *  1. Install Node.js and the Node Package Manager (npm): http://nodejs.org/download/
  *  2. Install Grunt: http://gruntjs.com/getting-started
- *       * Note that the project is already configured, so look at the "Working
- *         with an existing Grunt project" section after installing grunt.
- *  3. Copy `githooks/*` to `.git/hooks/`.
- *  4. Run `grunt githooks` to setup the pre-commit hook (see the precommit task
- *     at the bottom).
+ *        * Note that the project is already configured, so look at the "Working
+ *          with an existing Grunt project" section after installing grunt.
+ *  3. Make sure it all works:
  *
+ *     ```
+ *     grunt build
+ *     #  1. Copies files:
+ *     #       - `src/lib/*`         -> `build/lib/*`
+ *     #       - `src/dynamic/*`     -> `build/dynamic/*`
+ *     #       - `src/static/data/*` -> `build/static/data/*`
+ *     #       - `src/static/img/*`  -> `build/static/img/*`
+ *     #
+ *     #  2. Concatenates and minifies javascript:
+ *     #       - `src/static/js/*`   -> `build/static/js/app.js`
+ *     #                             -> `build/static/js/app.min.js`
+ *     #                             -> `build/static/js/app.min.js.map`
+ *     #
+ *     #  3. Minifies css:
+ *     #       - `src/static/scss/*` -> `build/static/css/*`
+ *     #                             -> `build/static/css/*.min.css`
+ *
+ *     grunt test
+ *     # Should successfully run through the existing (or empty) tests.
+ *     ```
+ *    
  *
  * Terminology
  * ------------------------------------------------------

@@ -11,17 +11,21 @@ Milkshake provides a starting structure and some pre-configured grunt taks.  It 
  2. Structure
  3. Setup
  4. Grunt documentation available in `Gruntfile.js`
-
-**TODOs**
-
-https://github.com/jtfairbank/Milkshake/issues
+ 5. Git Hooks documentation available in `githooks/README.md`
+ 6. [TODOs](https://github.com/jtfairbank/Milkshake/issues)
 
 Structure
 ------------------------------------------------------------
 The project's layout is designed to seperate each area of the site:
 
   * `src/` - Source code laid out in seperate, modular files.
-  * `build/` - Transformed and minimized source code files, ready to be served in a production environment.  The post-build directory structure will mimic that of `src/`.
+      - `src/` - the root contains webpages
+      - `src/dynamic` - server side code (api's, templates, ...)
+      - `src/static` - client side code (js, css, data, images, ...)
+      - `src/lib` - third party resources (libraries, images, ...)
+
+  * `build/` - Transformed and minimized source code files, ready to be served in a production environment.  The post-build directory structure will mimic that of `src/`, although individual files may have been concetenated or otherwise altered.
+
   * `test/` - Unit and integration tests.
 
 Setup
@@ -33,18 +37,19 @@ Ready to make your own delicious not-quite-frozen treat?  How about a [midnight 
     ```
     mkdir midnight/
     git clone git@github.com:jtfairbank/Milkshake.git
-    cp -r milkshake/* midnight/
+
+    cp -r milkshake/* midnight/          # assumes .hidden files are not copied
     cp milkshake/.gitignore midnight/
     
+    # OPTIONAL - remove the annoying gitkeeps
+    rm -r midnight/**/.gitkeep
+    ```
+
+ 2. Do your normal setup stuff.
+
+    ```
     cd midnight
 
-    # OPTIONAL - remove the annoying gitkeeps
-    rm -r **/.gitkeep
-    ```
-
- 2. Do your normal setup stuf (in `midnight/` now).
-
-    ```
     git init
     vim LICENSE         # You can pick a license at http://choosealicense.com/.
     vim README.md
@@ -60,42 +65,17 @@ Ready to make your own delicious not-quite-frozen treat?  How about a [midnight 
       - Add existing pages to `src/` directly.
       - Add existing tests to `test/`.
 
- 4. Setup Grunt.  Setup instructions are copied below, see the Grunt documentation in `Gruntfile.js` for more info.
-     1. Install Node.js and the Node Package Manager (npm): http://nodejs.org/download/
-     2. Install Grunt: http://gruntjs.com/getting-started
-          * Note that the project is already configured, so look at the "Working with an existing Grunt project" section after installing grunt.
-     3. Copy `githooks/*` to `.git/hooks/`.
-     4. Run `grunt githooks` to setup the pre-commit hook (see the precommit task
-        at the bottom).
+ 4. Setup Grunt: see `Gruntfile.js`'s setup section.
 
- 5. Make sure it all works:
-
-    ```
-    grunt build
-    #  1. Copies files:
-    #       - `src/lib/*`         -> `build/lib/*`
-    #       - `src/dynamic/*`     -> `build/dynamic/*`
-    #       - `src/static/data/*` -> `build/static/data/*`
-    #       - `src/static/img/*`  -> `build/static/img/*`
-    #
-    #  5. Concatenates and minifies javascript:
-    #       - `src/static/js/*`   -> `build/static/js/app.js`
-    #                             -> `build/static/js/app.min.js`
-    #                             -> `build/static/js/app.min.js.map`
-    #
-    #  6. Minifies css:
-    #       - `src/static/scss/*` -> `build/static/css/*`
-    #                             -> `build/static/css/*.min.css`
-
-    grunt test
-    # Should successfully run through the existing tests.
-    ```
+ 5. Setup the git hooks: see `githooks/README.md`'s setup section.
 
  6. Liftoff!
 
     ```
     git add --all
-    git commit -m "The best projects start with a Milkshake. ;)"
+
+    # skip the pre-commit git hook for the first commit
+    git commit --no-verify -m "The best projects start with a Milkshake. ;)"
 
     #                              ________
     #                             `---.     `.
