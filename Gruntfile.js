@@ -608,12 +608,18 @@ module.exports = function(grunt) {
  *
  * Auto-remove trailing whitespace.  Yay clean code.
  *
+ * NOTE: In all cases, 3rd party files (lib) and minimized files (.min.js) are
+ *       excluded from linting.  3rd party js files often have different style
+ *       guidelines and minimized files don't have any style by definition,
+ *       thus both have a tendency to cause jsHint errors.
+ *
  * ### Commands ###
  *
  *   * `grunt trimtrailingspaces` - Run all trimtrailingspaces commands (below).
  *   * `grunt trimtrailingspaces:js` - Trim js files.
- *   * `grunt trimtrailingspaces:scss` - Trim scss files.
+ *   * `grunt trimtrailingspaces:markdown` - Trim markdown files.
  *   * `grunt trimtrailingspaces:php` - Trim php files (and skeletons).
+ *   * `grunt trimtrailingspaces:scss` - Trim scss files.
  */
     , trimtrailingspaces: {
           options: {
@@ -623,15 +629,59 @@ module.exports = function(grunt) {
           }
 
         , js: {
-            src: ['*.js']
+            src: [
+                // generally include
+                '**/*.js'
+
+                // except 3rd party and minified files
+              , '!node_modules/**/*.js'
+              , '!src/lib/**/*.js'
+              , '!build/lib/**/*.js'
+              , '!**/*.min.js'
+
+                // but specifically include these
+                // ex: `src/lib/myCustomLibComponent/ohYeah.js`
+            ]
           }
 
-        , scss: {
-            src: ['*.scss']
+        , markdown: {
+            src: [
+                // generally include
+                '**/*.md'
+              , '**/*.markdown'
+
+                // except 3rd party files
+              , '!node_modules/**/*.md'
+              , '!node_modules/**/*.markdown'
+              , '!src/lib/**/*.md'
+              , '!src/lib/**/*.markdown'
+              , '!build/lib/**/*.md'
+              , '!build/lib/**/*.markdown'
+
+                // but specifically include these
+            ]
           }
 
         , php: {
-            src: ['*.php', '*.php.skel']
+            src: [
+                // generally include
+                '**/*.php'
+              , '**/*.php.skel'
+
+                // except 3rd party files
+              , '!node_modules/**/*.php'
+              , '!node_modules/**/*.php.skel'
+              , '!src/lib/**/*.php'
+              , '!src/lib/**/*.php.skel'
+              , '!build/lib/**/*.php'
+              , '!build/lib/**/*.php.skel'
+
+                // but specifically include these
+            ]
+          }
+
+        , scss: {
+            src: ['**/*.scss']
           }
       }
 

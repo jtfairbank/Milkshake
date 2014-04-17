@@ -43,7 +43,7 @@ Ready to make your own delicious not-quite-frozen treat?  How about a [midnight 
 
     cp -r milkshake/* midnight/          # assumes .hidden files are not copied
     cp milkshake/.gitignore midnight/
-    
+
     # OPTIONAL - remove the annoying gitkeeps
     rm -r midnight/**/.gitkeep
     ```
@@ -83,7 +83,7 @@ Ready to make your own delicious not-quite-frozen treat?  How about a [midnight 
     #                              ________
     #                             `---.     `.
     #                                  \      `.
-    #                                   )_______`.    
+    #                                   )_______`.
     #                                 .'        //`---...___
     #                                /         ||    // ||  `-._
     #                             )`-|   =//=  ||   ||  ||  / ).`.
@@ -92,7 +92,7 @@ Ready to make your own delicious not-quite-frozen treat?  How about a [midnight 
     #   .' | Inter- |  ).---.)  /_______..--'  ||   ||  -----    _ ||_/
     # .'_  |Plantery|  ||   ||  `-------'      ||   ||   =\\=    \_.'
     # |  | | Travel |  |'---'|    )`-|         ||   ||       _..-'
-    # '--'_____________|_____|    ).-| =\\=    ||    \\  _.-' || 
+    # '--'_____________|_____|    ).-| =\\=    ||    \\  _.-' ||
     # |[]--------------/     /   __==\          \\   _.-'    /o'\
     #  \     .--.     /    _...--''   '-.__......_.-'        \__/
     #   `-._//'o\\___.'---''             \     .'
