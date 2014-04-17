@@ -14,19 +14,22 @@ Milkshake provides a starting structure and some pre-configured grunt taks.  It 
  5. Git Hooks documentation available in `githooks/README.md`
  6. [TODOs](https://github.com/jtfairbank/Milkshake/issues)
 
+
 Structure
 ------------------------------------------------------------
-The project's layout is designed to seperate each area of the site:
+The project's layout is designed to seperate each area of the site.  Specifically, the development, production, and testing areas are all distinct.
 
   * `src/` - Source code laid out in seperate, modular files.
-      - `src/` - the root contains webpages
-      - `src/dynamic` - server side code (api's, templates, ...)
-      - `src/static` - client side code (js, css, data, images, ...)
       - `src/lib` - third party resources (libraries, images, ...)
+      - `src/common` - custom code shared across applications
+      - `src/app-strawberry` - a template app that lays out the expected structure.  Each application folder contains app specific code, including the webpages themselves.
 
   * `build/` - Transformed and minimized source code files, ready to be served in a production environment.  The post-build directory structure will mimic that of `src/`, although individual files may have been concetenated or otherwise altered.
 
   * `test/` - Unit and integration tests.
+
+Milkshake is setup to handle multiple related applications.  For example, you could have your app and a promotional site within `src/`, with libraries stored in `src/lib/` and common files stored in `src/common/`.  Its def a bit inspired by [django](https://www.djangoproject.com/).
+
 
 Setup
 ------------------------------------------------------------
@@ -58,12 +61,12 @@ Ready to make your own delicious not-quite-frozen treat?  How about a [midnight 
     # ...Shake Dat Thang...
     ```
 
- 3. Setup your source and test folders (in `midight/` now). You can also do this after the initial commit.
-      - Add any libraries (3rd party dependencies) to `src/lib`.
-      - Add existing dynamic resources to `src/dynamic`.
-      - Add existing static resources to `src/static`.
-      - Add existing pages to `src/` directly.
-      - Add existing tests to `test/`.
+ 3. Setup your `src/` and `test/` folders. You can also do this after the initial commit.
+      - Add any 3rd party resources (libraries, images, ...) to `src/lib`.
+      - Add files you created that are shared between applications to the appropriate subdirectory in `src/common/`.
+      - Add existing application files to an application folder in `src/`.  `src/app-strawberry` provides a sample layout.  Also add the folder structure to `build/`, so that the build process knows where to put things.
+      - Customize the `Grunt.js` file for your application's files and needs.  You can search for `app-strawberry` to find the relevant portions.  The whole file is really worth a readthrough tho, so you know what's going on.
+      - Add existing tests to the appropriate directory in `test/`.
 
  4. Setup Grunt: see `Gruntfile.js`'s setup section.
 
