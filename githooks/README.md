@@ -14,7 +14,7 @@ Setup
 
 ```
 # 1. copy existing githooks
-cp githooks/pre-commit .git/hooks/pre-commit
+cp githooks/* .git/hooks/
 
 # 2. add grunt tasks to the githooks
 grunt githooks
