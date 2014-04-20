@@ -12,9 +12,6 @@
  *  2. Grunt Modules and Commands
  *  3. Grunt Tasks
  *  4. [TODOs](https://github.com/jtfairbank/Milkshake/issues?labels=Grunt&page=1&state=open)
- *       * TODO: Add new TODOs to github, since I don't have internet now.
- *         Do a global search / replace for them.
- *       * TODO: test each command and task.
  *
  *
  * Setup
@@ -27,34 +24,6 @@
  *  3. Use the Strawberry sample application as an example to configure Grunt
  *     for your own app.  These configuration points are labeled as `APP
  *     SPECIFIC`.
- *  4. Make sure it all works:
- *
- *     ```
- *     grunt build
- *     #  1. Copies files:
- *     #       - `src/lib/*`                 -> `build/lib/*`
- *     #       - `src/common/data/*`         -> `build/common/data/*`
- *     #       - `src/common/img/*`          -> `build/common/img/*`
- *     #       - `src/app-strawberry/data/*` -> `build/app-strawberry/data/*`
- *     #       - `src/app-strawberry/img/*`  -> `build/app-strawberry/img/*`
- *     #
- *     #  2. Concatenates and minifies javascript:
- *     #       - `src/common/js/*`           -> `build/common/js/app.js`
- *     #                                     -> `build/common/js/app.min.js`
- *     #                                     -> `build/common/js/app.min.js.map`
- *     #       - `src/app-strawberry/js/*`   -> `build/app-strawberry/js/*`
- *     #                                     -> `build/app-strawberry/js/app.min.js`
- *     #                                     -> `build/app-strawberry/js/app.min.js.map`
- *     #
- *     #  3. Minifies css:
- *     #       - `src/common/scss/*`         -> `build/common/css/*`
- *     #                                     -> `build/common/css/*.min.css`
- *     #       - `src/app-strawberry/scss/*` -> `build/app-strawberry/css/*`
- *     #                                     -> `build/app-strawberry/css/*.min.css`
- *
- *     grunt test
- *     # Should successfully run through the existing (or empty) tests.
- *     ```
  *
  *
  * Terminology
@@ -108,7 +77,11 @@ var glob = require("glob");
 
 
 /* Grunt Modules and Commands
- * ========================================================================== */
+ * ==========================================================================
+ * STYLE: Grunt modules are listed in alphabetical order.  The commands
+ *        for each task are broken up into *common* and *app specific* sections
+ *        (where appropriate) but otherwise are also listed alphabetically.
+ */
 
 module.exports = function(grunt) {
   // load grunt modules
@@ -131,7 +104,7 @@ module.exports = function(grunt) {
  *     files.
  */
     , clean: {
-        build: ['build/*', '!build/**/.*']
+        build: ['build/*', '!build/**/.gitkeep']
       }
 
 
@@ -178,7 +151,6 @@ module.exports = function(grunt) {
 
           // APP SPECIFIC
 
-          // app-strawberry
         , js_strawberry: {
               options: {
                   banner: "'use strict';\n\n" +
@@ -208,27 +180,21 @@ module.exports = function(grunt) {
  * ### Commands ###
  *
  *   * `grunt copy` - Run all copy commands (below).
- *   * `grunt copy:lib` - Copy library files to build.
  *   * `grunt copy:common_img` - Copy common images to build.
  *   * `grunt copy:common_data` - Copy common data files to build.
+ *   * `grunt copy:lib` - Copy library files to build.
  *
  * **App Specific**
  *
- *   * `grunt copy:strawberry_pages` - Copy app-strawberry web pages to build.
- *   * `grunt copy:strawberry_img` - Copy app-strawberry images to build.
  *   * `grunt copy:strawberry_data` - Copy app-strawberry data files to build.
+ *   * `grunt copy:strawberry_img` - Copy app-strawberry images to build.
+ *   * `grunt copy:strawberry_pages` - Copy app-strawberry web pages to build.
  */
     , copy: {
 
           // COMMON
 
-          lib: {
-              expand: true
-            , cwd: 'src/lib/'
-            , src: './**'
-            , dest: 'build/lib/'
-          }
-        , common_img: {
+          common_img: {
               expand: true
             , cwd: 'src/common/img/'
             , src: './**'
@@ -240,15 +206,20 @@ module.exports = function(grunt) {
             , src: './**'
             , dest: 'build/common/data/'
           }
+        , lib: {
+              expand: true
+            , cwd: 'src/lib/'
+            , src: './**'
+            , dest: 'build/lib/'
+          }
 
           // APP SPECIFIC
 
-          // app-strawberry
-        , strawberry_pages: {
+        , strawberry_data: {
               expand: true
-            , cwd: 'src/app-strawberry'
-            , src: './*.*' // HACK: files only!
-            , dest: 'build/app-strawberry/'
+            , cwd: 'src/app-strawberry/data/'
+            , src: './**'
+            , dest: 'build/app-strawberry/data/'
           }
         , strawberry_img: {
               expand: true
@@ -256,11 +227,11 @@ module.exports = function(grunt) {
             , src: './**'
             , dest: 'build/app-strawberry/img/'
           }
-        , strawberry_data: {
+        , strawberry_pages: {
               expand: true
-            , cwd: 'src/app-strawberry/data/'
-            , src: './**'
-            , dest: 'build/app-strawberry/data/'
+            , cwd: 'src/app-strawberry'
+            , src: './*.*' // HACK: files only!
+            , dest: 'build/app-strawberry/'
           }
       }
 
@@ -323,11 +294,9 @@ module.exports = function(grunt) {
  *      prefered.
  *   * `grunt jshint:all` - Lint all js files, including those in the project's
  *      root (like `Gruntfile.js`).
- *   * `grunt jshint:source` - Lint `src/`.
  *   * `grunt jshint:build` - Lint `build/`.
+ *   * `grunt jshint:source` - Lint `src/`.
  *   * `grunt jshint:test` - Lint `test/`.
- *
- * TODO: ignore files / folders in the .gitignore
  */
     , jshint: {
           // global options
@@ -375,15 +344,18 @@ module.exports = function(grunt) {
               //   * true = warning on
               //   * false = warning off
             , globals: {
-                  "_": false              // underscore.js
-
-                , "module": false         // Gruntfile.js (TODO: and Node in general?)
-                , "require": false
-
-                , "beforeEach": false     // jasmine
+                  "afterEach": false     // jasmine
+                , "beforeEach": false
                 , "describe": false
                 , "expect": false
                 , "it": false
+                , "jasmine": false
+                , "spyOn": false
+
+                , "module": false        // Gruntfile.js
+                , "require": false
+
+                , "_": false             // underscore.js
               }
           }
 
@@ -404,19 +376,6 @@ module.exports = function(grunt) {
             ]
           }
 
-        , src: {
-            src: [
-                // generally include
-                'src/**/*.js'
-
-                // except 3rd party and minified files
-              , '!src/lib/**/*.js'
-              , '!src/**/*.min.js'
-
-                // but specifically include these
-            ]
-          }
-
         , build: {
             src: [
                 // generally include
@@ -425,6 +384,19 @@ module.exports = function(grunt) {
                 // except 3rd party and minified files
               , '!build/lib/**/*.js'
               , '!build/**/*.min.js'
+
+                // but specifically include these
+            ]
+          }
+
+        , src: {
+            src: [
+                // generally include
+                'src/**/*.js'
+
+                // except 3rd party and minified files
+              , '!src/lib/**/*.js'
+              , '!src/**/*.min.js'
 
                 // but specifically include these
             ]
@@ -480,7 +452,6 @@ module.exports = function(grunt) {
 
           // APP SPECIFIC
 
-          // app-strawberry
         , strawberry: {
               singleRun: true
             , files: [
@@ -572,7 +543,6 @@ module.exports = function(grunt) {
 
           // APP SPECIFIC
 
-          // app-strawberry
         , strawberry: {
               files: [{
                   expand: true
@@ -681,7 +651,17 @@ module.exports = function(grunt) {
           }
 
         , scss: {
-            src: ['**/*.scss']
+            src: [
+                // generally include
+                '**/*.scss'
+
+                // except 3rd party files
+              , '!node_modules/**/*.scss'
+              , '!src/lib/**/*.scss'
+              , '!build/lib/**/*.scss'
+
+                // but specifically include these
+            ]
           }
       }
 
@@ -723,7 +703,6 @@ module.exports = function(grunt) {
 
           // APP SPECIFIC
 
-          // app-strawberry
         , strawberry: {
               expand: true
             , cwd: 'build/app-strawberry/js/'
@@ -749,8 +728,9 @@ module.exports = function(grunt) {
  *     run by each command, and multiple commands may be triggered by a single
  *     file change.
  *
- *   * `grunt watch:lib` - Monitor library files and build them on change.
  *   * `grunt watch:common` - Monitor common files and build them on change.
+ *   * `grunt watch:lib` - Monitor library files and build them on change.
+ *   * `grunt watch:pages` - Monitor webpages and build them on change.
  *
  * **App Specific**
  *
@@ -760,13 +740,7 @@ module.exports = function(grunt) {
     , watch: {
           options: {
               interrupt: true     // interupts the current tasks if another file is changed, restarting them
-            , forever: true       // TODO: why do we need this again?
             , atBegin: true       // runs all tasks when the watch server is started
-          }
-
-        , lib: {
-              files: ['src/lib/**']
-            , tasks: ['build_lib']
           }
 
         , common: {
@@ -774,9 +748,18 @@ module.exports = function(grunt) {
             , tasks: ['build_common']
           }
 
+        , lib: {
+              files: ['src/lib/**']
+            , tasks: ['build_lib']
+          }
+
+        , pages: {
+              files: ['src/*.*']
+            , tasks: ['build_pages']
+          }
+
           // APP SPECIFIC
 
-          // app-strawberry
         , strawberry: {
               files: ['src/app-strawberry/**']
             , tasks: ['build_strawberry_app']
@@ -787,8 +770,15 @@ module.exports = function(grunt) {
 
 
 /* Grunt Tasks
- * ========================================================================== */
-
+ * ==========================================================================
+ * STYLE: Grunt tasks are grouped into sections, each of which is listed
+ *        alphabetically.  The tasks themseleves are listed alphabetically
+ *        within each section.  However each task may lists commands in a
+ *        non-alphabetical order for performance or sequencing reasons.  For
+ *        example, if the js files change much more than the webpages, it may
+ *        make more sense to run js-related commands before page-related
+ *        commands within a task.
+ */
 
 /* Task: Build and Friends
  * ------------------------------------------------------
@@ -807,8 +797,9 @@ module.exports = function(grunt) {
   grunt.registerTask('build', [
       'clean:build'
     , 'trimtrailingspaces'
-    , 'build_lib'
+
     , 'build_common'
+    , 'build_lib'
 
       // APP SPECIFIC
     , 'build_strawberry_app'
@@ -819,13 +810,8 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('build_common', [
-      // js
       'build_js_common'
-
-      // css
     , 'sass:common'
-
-      // static and server side files
     , 'sass:common_min'
     , 'copy:common_img'
     , 'copy:common_data'
@@ -847,14 +833,9 @@ module.exports = function(grunt) {
   // APP SPECIFIC
 
   grunt.registerTask('build_strawberry_app', [
-      // js
       'build_js_strawberry'
-
-      // css
     , 'sass:strawberry'
     , 'sass:strawberry_min'
-
-      // static and server side files
     , 'copy:strawberry_pages'
     , 'copy:strawberry_img'
     , 'copy:strawberry_data'
@@ -867,8 +848,8 @@ module.exports = function(grunt) {
       return glob.sync(src).length > 0;
     })) {
       grunt.task.run([
-          'concat:js_common'
-        , 'uglify:yomama'
+          'concat:js_strawberry'
+        , 'uglify:strawberry'
       ]);
     }
   });
@@ -912,14 +893,12 @@ module.exports = function(grunt) {
     , 'phpunit'
   ]);
 
-  // A helper to prevent `grunt karma:jsunit` from failing if there are no
+  // A helper to prevent `grunt karma` from failing if there are no
   // unit tests, for example on project initialization.
   grunt.registerTask('test_js', function() {
     if (glob.sync('test/jsunit/**/*.js').length) {
       grunt.task.run([
-          'trimtrailingspaces:js'
-        , 'concat:js'
-        , 'uglify:yomama'
+          'karma'
       ]);
     }
   });
