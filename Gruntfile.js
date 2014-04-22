@@ -878,7 +878,6 @@ module.exports = function(grunt) {
   grunt.registerTask('precommit', [
       'build'
     , 'test'
-    , 'clean:build'
   ]);
 
 
